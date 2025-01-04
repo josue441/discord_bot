@@ -1,5 +1,4 @@
 import discord, os, random, requests, webserver
-import pandas as pd #forma correcta de instalar: py -3.11 -m pip install pandas
 from discord.ext import commands #soluccion: py -3.11 -m pip install -U discord.py
 from bot_logic import gen_pass, imagenes_de_perros, get_duck, videos_choice, buscar_avion
 from bs4 import BeautifulSoup # forma correcta de instalar: py -3.11 -m pip install bs4
