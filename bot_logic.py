@@ -1,6 +1,5 @@
 import random, requests, difflib
 from bs4 import BeautifulSoup
-import pandas as pd
 
 def gen_pass(pass_length):
     #elementos de la contraseña
