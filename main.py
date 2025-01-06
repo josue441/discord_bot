@@ -1,5 +1,6 @@
 import discord, os, random, requests, webserver
 from discord.ext import commands #soluccion: py -3.11 -m pip install -U discord.py
+from bs4 import BeautifulSoup
 from bot_logic import gen_pass, imagenes_de_perros, get_duck, videos_choice, buscar_avion
 from urllib.parse import quote
 
