@@ -1,7 +1,7 @@
-import discord, os, random, requests, webserver
-from discord.ext import commands #soluccion: py -3.11 -m pip install -U discord.py
-from bs4 import BeautifulSoup
+import discord, os, requests, webserver
+from discord.ext import commands 
 from bot_logic import gen_pass, imagenes_de_perros, get_duck, videos_choice, buscar_avion
+from bs4 import BeautifulSoup
 from urllib.parse import quote
 
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
@@ -51,12 +51,12 @@ async def limpiar(ctx):
 @bot.command()
 async def avion(ctx, *, arg):
     try:
-        # Llama a la función buscar_avion para obtener el nombre correcto o enlace similar
+        # Llama a la función buscar_avion para obtener el enlace
         avion = buscar_avion(arg)
 
-        # Si buscar_avion devuelve None o un mensaje de error
-        if not avion or not avion.startswith("https://wiki.warthunder.com/unit/"):
-            await ctx.send("✈️ No se encontró un avión similar. Intenta con otro nombre.")
+        # Si buscar_avion devuelve None
+        if not avion:
+            await ctx.send("✈️ Avión no encontrado. Intenta con otro nombre.")
             return
 
         # Realiza la solicitud a la URL obtenida
@@ -71,7 +71,7 @@ async def avion(ctx, *, arg):
 
         # Maneja posibles datos faltantes
         rank = temp[0].text.strip() if len(temp) > 0 else "Desconocido"
-        battle_rating = " ".join(temp[1].text.split()) if len(temp) > 1 else "Desconocido"
+        battle_rating = temp[1].text.strip() if len(temp) > 1 else "Desconocido"
         nation = temp[4].text.strip() if len(temp) > 4 else "Desconocido"
         unit = temp[5].text.strip() if len(temp) > 5 else "Desconocido"
         operator = temp[6].text.strip() if len(temp) > 6 else "Desconocido"
@@ -93,11 +93,6 @@ async def avion(ctx, *, arg):
     except Exception as e:
         await ctx.send("⚠️ Ocurrió un error al procesar tu solicitud. Inténtalo de nuevo.")
         print("Error:", e)
-
-@avion.error
-async def error_type(ctx, error):
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("⚠️ Tienes que darme el nombre del avión. Usa: `$avion <nombre>`")
 
 
 webserver.keep_alive()
