@@ -18,7 +18,7 @@ def imagenes_de_perros():
     data = res.json()
     return data['url']
 
-#funcion para solicitar imagenes de patos
+#funcion para solicitar imagenes de patos|
 def get_duck():
     url = "https://random-d.uk/api/random"
     res = requests.get(url)
@@ -37,29 +37,15 @@ def videos_choice():
 
 def buscar_avion(avion):
     try:
-        # Página principal de los aviones
-        url = "https://wiki.warthunder.com/aviation"
-        response = requests.get(url)
+        # Reemplazar espacios por guiones bajos
+        enlace = f"https://wiki.warthunder.com/{avion}"
 
-        # Verificar si la solicitud fue exitosa
-        if response.status_code != 200:
-            return f"Error: No se pudo acceder a la página. Código {response.status_code}"
+        # Verificar si el enlace es válido
+        response = requests.get(enlace)
+        if response.status_code == 404:
+            return None  # Retorna None si el avión no existe
 
-        # Analizar el HTML de la página
-        bs = BeautifulSoup(response.text, "lxml")
-
-        # Extraer los enlaces de los aviones
-        temp = bs.find_all("a", "wt-tree_item-link")
-        links = [post.get("href") for post in temp]
-        nombres = [link.split("/")[-1] for link in links]  # Extraer solo el nombre del avión
-
-        # Buscar el nombre más parecido al ingresado por el usuario
-        coincidencias = difflib.get_close_matches(avion.lower(), nombres, n=1, cutoff=0.6)
-        if coincidencias:
-            nombre_avion = coincidencias[0]
-            return f"https://wiki.warthunder.com{links[nombres.index(nombre_avion)]}"  # Retorna el enlace completo
-        else:
-            return "No se encontró un avión similar."
+        return enlace  # Retorna el enlace si existe
 
     except Exception as e:
         return f"Error: {e}"
