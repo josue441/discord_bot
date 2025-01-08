@@ -38,7 +38,7 @@ def videos_choice():
 def buscar_avion(avion):
     try:
         # Reemplazar espacios por guiones bajos
-        enlace = f"https://wiki.warthunder.com/{avion}"
+        enlace = f"wiki.warthunder.com/unit/{avion}"
 
         # Verificar si el enlace es válido
         response = requests.get(enlace)
